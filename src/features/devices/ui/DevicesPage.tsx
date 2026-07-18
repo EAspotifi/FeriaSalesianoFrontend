@@ -15,7 +15,7 @@ export function DevicesPage() {
 
       {devices.length > 0 && (
         <div className="data-table-wrap">
-          <table className="data-table">
+          <table className="data-table data-table--stack">
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -25,8 +25,10 @@ export function DevicesPage() {
             <tbody>
               {devices.map((device) => (
                 <tr key={device.idDevice}>
-                  <td>{device.nombre}</td>
-                  <td className="info-card__value--mono">{device.idDevice}</td>
+                  <td data-label="Nombre">{device.nombre}</td>
+                  <td data-label="ID dispositivo" className="info-card__value--mono">
+                    {device.idDevice}
+                  </td>
                 </tr>
               ))}
             </tbody>

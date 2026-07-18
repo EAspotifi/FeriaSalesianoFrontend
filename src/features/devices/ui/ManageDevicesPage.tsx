@@ -77,7 +77,7 @@ export function ManageDevicesPage() {
           <p className="panel__empty">No hay dispositivos registrados.</p>
         ) : (
           <div className="data-table-wrap">
-            <table className="data-table">
+            <table className="data-table data-table--stack">
               <thead>
                 <tr>
                   <th>Nombre</th>
@@ -89,16 +89,18 @@ export function ManageDevicesPage() {
               <tbody>
                 {devices.map((device) => (
                   <tr key={device.idDevice}>
-                    <td>{device.nombre}</td>
-                    <td className="info-card__value--mono">{device.idDevice}</td>
-                    <td>
+                    <td data-label="Nombre">{device.nombre}</td>
+                    <td data-label="ID dispositivo" className="info-card__value--mono">
+                      {device.idDevice}
+                    </td>
+                    <td data-label="Asignado a">
                       {device.assignedTo ? (
                         device.assignedTo.nombre
                       ) : (
                         <span className="device-status--free">Libre</span>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Acciones" className="data-table__actions">
                       <div className="device-actions">
                         <button
                           type="button"

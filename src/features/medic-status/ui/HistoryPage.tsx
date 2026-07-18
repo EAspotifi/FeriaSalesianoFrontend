@@ -30,7 +30,7 @@ export function HistoryPage() {
           <p className="panel__empty">No hay registros en el historial.</p>
         ) : (
           <div className="data-table-wrap">
-            <table className="data-table">
+            <table className="data-table data-table--stack">
               <thead>
                 <tr>
                   <th>BPM</th>
@@ -42,10 +42,10 @@ export function HistoryPage() {
               <tbody>
                 {history.map((item) => (
                   <tr key={item.id}>
-                    <td>{formatMetric(item.bpm)}</td>
-                    <td>{formatMetric(item.spo2)} %</td>
-                    <td>{formatMetric(item.temperature)} °C</td>
-                    <td>{formatDateTime(item.created)}</td>
+                    <td data-label="BPM">{formatMetric(item.bpm)}</td>
+                    <td data-label="SpO₂">{formatMetric(item.spo2)} %</td>
+                    <td data-label="Temperatura">{formatMetric(item.temperature)} °C</td>
+                    <td data-label="Fecha">{formatDateTime(item.created)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -74,7 +74,7 @@ export function HistoryPage() {
           <p className="panel__empty">No hay promedios registrados.</p>
         ) : (
           <div className="data-table-wrap">
-            <table className="data-table">
+            <table className="data-table data-table--stack">
               <thead>
                 <tr>
                   <th>BPM</th>
@@ -86,10 +86,10 @@ export function HistoryPage() {
               <tbody>
                 {media.map((item) => (
                   <tr key={item.id}>
-                    <td>{formatMetric(item.bpm)}</td>
-                    <td>{formatMetric(item.spo2)} %</td>
-                    <td>{formatMetric(item.temperature)} °C</td>
-                    <td>{formatDateTime(item.created)}</td>
+                    <td data-label="BPM">{formatMetric(item.bpm)}</td>
+                    <td data-label="SpO₂">{formatMetric(item.spo2)} %</td>
+                    <td data-label="Temperatura">{formatMetric(item.temperature)} °C</td>
+                    <td data-label="Fecha">{formatDateTime(item.created)}</td>
                   </tr>
                 ))}
               </tbody>
