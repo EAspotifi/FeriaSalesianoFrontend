@@ -58,6 +58,14 @@ export function ProfileMenu() {
           </button>
           <button
             type="button"
+            className="profile-menu__item"
+            role="menuitem"
+            onClick={() => goTo("/devices/manage")}
+          >
+            Administrar dispositivos
+          </button>
+          <button
+            type="button"
             className="profile-menu__item profile-menu__item--danger"
             role="menuitem"
             onClick={() => {

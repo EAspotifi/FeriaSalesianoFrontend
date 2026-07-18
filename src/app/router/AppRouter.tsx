@@ -4,6 +4,7 @@ import { LoginPage } from "../../features/auth/ui/LoginPage";
 import { RegisterPage } from "../../features/auth/ui/RegisterPage";
 import { DashboardPage } from "../../features/dashboard/ui/DashboardPage";
 import { DevicesPage } from "../../features/devices/ui/DevicesPage";
+import { ManageDevicesPage } from "../../features/devices/ui/ManageDevicesPage";
 import { HistoryPage } from "../../features/medic-status/ui/HistoryPage";
 import { ProfilePage } from "../../features/profile/ui/ProfilePage";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -55,6 +56,14 @@ export function AppRouter() {
           element={
             <ProtectedRoute>
               <DevicesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/devices/manage"
+          element={
+            <ProtectedRoute>
+              <ManageDevicesPage />
             </ProtectedRoute>
           }
         />

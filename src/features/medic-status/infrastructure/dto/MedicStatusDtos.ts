@@ -1,8 +1,9 @@
 export interface MedicStatusDto {
   id: string;
   userId: string;
-  rpm: number;
-  tmp: number;
+  bpm: number;
+  spo2: number;
+  temperature: number;
   created: string;
 }
 
@@ -10,8 +11,9 @@ export interface MedicStatusMediaDto {
   id: string;
   userId: string;
   nombre: string;
-  rpm: number;
-  tmp: number;
+  bpm: number;
+  spo2: number;
+  temperature: number;
   created: string;
 }
 

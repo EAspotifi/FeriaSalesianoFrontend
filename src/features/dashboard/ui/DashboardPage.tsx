@@ -32,18 +32,28 @@ export function DashboardPage() {
 
       <section className="metric-cards">
         <article className="metric-card">
-          <span className="metric-card__label">RPM</span>
+          <span className="metric-card__label">BPM</span>
           <span className="metric-card__value">
-            {isLoading && !data ? "—" : data ? formatMetric(data.rpm) : "Sin datos"}
+            {isLoading && !data ? "—" : data ? formatMetric(data.bpm) : "Sin datos"}
           </span>
         </article>
         <article className="metric-card">
-          <span className="metric-card__label">TMP</span>
+          <span className="metric-card__label">SpO₂</span>
           <span className="metric-card__value">
             {isLoading && !data
               ? "—"
               : data
-                ? `${formatMetric(data.tmp)} °C`
+                ? `${formatMetric(data.spo2)} %`
+                : "Sin datos"}
+          </span>
+        </article>
+        <article className="metric-card">
+          <span className="metric-card__label">Temperatura</span>
+          <span className="metric-card__value">
+            {isLoading && !data
+              ? "—"
+              : data
+                ? `${formatMetric(data.temperature)} °C`
                 : "Sin datos"}
           </span>
         </article>

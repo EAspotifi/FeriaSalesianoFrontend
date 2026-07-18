@@ -11,8 +11,9 @@ export function mapMedicStatusDto(dto: MedicStatusDto): MedicStatus {
   return {
     id: dto.id,
     userId: dto.userId,
-    rpm: dto.rpm,
-    tmp: dto.tmp,
+    bpm: dto.bpm,
+    spo2: dto.spo2,
+    temperature: dto.temperature,
     created: dto.created,
   };
 }
@@ -22,8 +23,9 @@ export function mapMedicStatusMediaDto(dto: MedicStatusMediaDto): MedicStatusMed
     id: dto.id,
     userId: dto.userId,
     nombre: dto.nombre,
-    rpm: dto.rpm,
-    tmp: dto.tmp,
+    bpm: dto.bpm,
+    spo2: dto.spo2,
+    temperature: dto.temperature,
     created: dto.created,
   };
 }

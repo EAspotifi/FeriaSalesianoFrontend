@@ -33,16 +33,18 @@ export function HistoryPage() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>RPM</th>
-                  <th>TMP</th>
+                  <th>BPM</th>
+                  <th>SpO₂</th>
+                  <th>Temperatura</th>
                   <th>Fecha</th>
                 </tr>
               </thead>
               <tbody>
                 {history.map((item) => (
                   <tr key={item.id}>
-                    <td>{formatMetric(item.rpm)}</td>
-                    <td>{formatMetric(item.tmp)}</td>
+                    <td>{formatMetric(item.bpm)}</td>
+                    <td>{formatMetric(item.spo2)} %</td>
+                    <td>{formatMetric(item.temperature)} °C</td>
                     <td>{formatDateTime(item.created)}</td>
                   </tr>
                 ))}
@@ -75,16 +77,18 @@ export function HistoryPage() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>RPM</th>
-                  <th>TMP</th>
+                  <th>BPM</th>
+                  <th>SpO₂</th>
+                  <th>Temperatura</th>
                   <th>Fecha</th>
                 </tr>
               </thead>
               <tbody>
                 {media.map((item) => (
                   <tr key={item.id}>
-                    <td>{formatMetric(item.rpm)}</td>
-                    <td>{formatMetric(item.tmp)}</td>
+                    <td>{formatMetric(item.bpm)}</td>
+                    <td>{formatMetric(item.spo2)} %</td>
+                    <td>{formatMetric(item.temperature)} °C</td>
                     <td>{formatDateTime(item.created)}</td>
                   </tr>
                 ))}
