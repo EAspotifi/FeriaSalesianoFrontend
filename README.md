@@ -1,8 +1,8 @@
 # Proyecto Feria Salesiano — Frontend
 
-Frontend del sistema de monitoreo médico, construido con **React + Vite + TypeScript**, aplicando **Arquitectura Hexagonal (Ports & Adapters)** + **Vertical Slice Architecture** + principios de **Clean Architecture**.
+Frontend del sistema de monitoreo médico, construido con **React + Vite + TypeScript**, aplicando **Arquitectura Hexagonal (Ports & Adapters)**, **Vertical Slice Architecture** y principios de **Clean Architecture**.
 
-Incluye una pantalla de **Login** que consume la API de Python (FastAPI) del proyecto `ProyectoFeriaSalesianoPy`. Tema visual: **azul y blanco**.
+Permite autenticarse y registrarse, consultar signos vitales (BPM, SpO₂ y temperatura), revisar el historial y sus promedios, consultar el perfil y administrar dispositivos. Consume la API FastAPI de `ProyectoFeriaSalesianoPy` y utiliza un tema visual azul y blanco.
 
 ---
 
@@ -11,9 +11,10 @@ Incluye una pantalla de **Login** que consume la API de Python (FastAPI) del pro
 | Herramienta | Uso |
 |-------------|-----|
 | React 19 + TypeScript | UI |
-| Vite | Bundler / dev server |
-| React Router | Enrutamiento y rutas protegidas |
-| Fetch API | Cliente HTTP (adaptador propio) |
+| Vite 8 | Bundler y servidor de desarrollo |
+| React Router 7 | Enrutamiento y rutas protegidas |
+| Fetch API | Adaptador HTTP propio con renovación automática del token |
+| oxlint | Análisis estático |
 
 ---
 
@@ -34,23 +35,31 @@ src/
 ├── app/                        # Composición de la aplicación
 │   ├── providers/              #   AppProviders (AuthProvider)
 │   ├── router/                 #   AppRouter + ProtectedRoute
+│   ├── layout/                 #   AppShell
 │   └── main.tsx                #   Punto de entrada
 │
 ├── shared/                     # Reutilizable entre features
-│   ├── config/env.ts           #   Configuración (VITE_API_BASE_URL)
+│   ├── config/env.ts           #   Configuración de entorno
 │   ├── ui/                     #   Componentes UI (Button, TextField)
-│   └── utils/httpClient.ts     #   Cliente HTTP genérico (adaptador técnico)
+│   └── utils/                  #   Cliente HTTP, formatos y utilidades
 │
 └── features/
-    ├── auth/                   # Vertical slice de autenticación
-    │   ├── domain/             #   Entidades (User, AuthSession) + Ports
-    │   ├── application/        #   Casos de uso (Login, Logout, GetCurrentSession)
-    │   ├── infrastructure/     #   HttpAuthRepository, LocalStorageSessionStorage, DTOs, mappers
-    │   ├── ui/                 #   LoginPage, LoginForm, context, hooks
-    │   └── di.ts               #   Inyección de dependencias (composición)
-    └── dashboard/
-        └── ui/DashboardPage.tsx
+    ├── auth/                   # Login, registro, sesión y refresh token
+    ├── dashboard/              # Últimos signos vitales con polling
+    ├── medic-status/           # Historial, promedios y agregación
+    ├── profile/                # Perfil del usuario autenticado
+    └── devices/                # Mis dispositivos y administración
 ```
+
+Cada feature puede contener:
+
+| Capa | Responsabilidad |
+|------|-----------------|
+| `domain/` | Entidades y puertos puros, sin React ni HTTP |
+| `application/` | Casos de uso que dependen únicamente del dominio |
+| `infrastructure/` | Adaptadores HTTP/storage y mapeo DTO ↔ dominio |
+| `ui/` | Páginas, componentes y hooks de React |
+| `di.ts` | Composición e inyección manual de dependencias |
 
 ### Reglas aplicadas
 
@@ -58,43 +67,81 @@ src/
 - **Application**: orquesta el dominio; depende de *ports*, nunca de implementaciones.
 - **Infrastructure**: implementa los *ports*, mapea DTOs ↔ dominio. Sin lógica de negocio.
 - **UI**: renderiza y consume casos de uso vía hooks. Sin `fetch` directo.
-- **Dependency Injection**: los adaptadores se instancian en `features/auth/di.ts` y se inyectan.
+- **Dependency Injection**: cada feature compone e inyecta sus adaptadores desde `di.ts`.
 
 ---
 
-## Cómo funciona el login
+## Funcionalidades y rutas
+
+| Ruta | Acceso | Funcionalidad |
+|------|--------|---------------|
+| `/login` | Pública | Inicio de sesión |
+| `/register` | Pública | Registro de usuario |
+| `/` | Protegida | Dashboard con último BPM, SpO₂ y temperatura |
+| `/history` | Protegida | Historial, promedios y agregación manual |
+| `/profile` | Protegida | Perfil del usuario |
+| `/devices` | Protegida | Dispositivos asignados al usuario |
+| `/devices/manage` | Protegida | Crear, asignar, reasignar y eliminar dispositivos libres |
+
+El dashboard consulta el último registro al iniciar y luego aplica polling. El intervalo se configura con `VITE_POLLING_INTERVAL_MS`.
+
+En **Administrar dispositivos**:
+
+- Se crean dispositivos indicando su nombre.
+- Se busca al usuario destino por nombre o correo.
+- Una asignación existente se reemplaza al seleccionar otro usuario.
+- El botón de eliminación solo está habilitado para dispositivos sin asignación.
+- El backend también valida la restricción y devuelve `409` si se intenta eliminar uno asignado.
+
+---
+
+## Autenticación y sesión
 
 1. `LoginForm` (UI) usa el hook `useLogin`, que invoca `LoginUseCase`.
 2. `LoginUseCase` usa el port `AuthRepository` → implementado por `HttpAuthRepository`.
 3. `HttpAuthRepository` hace `POST /auth/login` y mapea el DTO de la API a la entidad `AuthSession`.
 4. La sesión se persiste vía el port `SessionStorage` (`LocalStorageSessionStorage`).
 5. `ProtectedRoute` protege las rutas privadas según el estado de autenticación.
+6. Si una petición responde `401`, el cliente intenta renovar la sesión mediante `/auth/refresh`, actualiza ambos tokens y reintenta la petición una vez.
 
 Endpoints consumidos de la API:
 
 | Método | Ruta | Uso |
 |--------|------|-----|
 | `POST` | `/auth/login` | Autenticación (`username`, `password`) |
+| `POST` | `/auth/signin` | Registro de usuario |
+| `POST` | `/auth/refresh` | Renovación de access y refresh token |
 | `GET` | `/users/profile` | Perfil del usuario (Bearer token) |
+| `GET` | `/users?search=` | Usuarios y búsqueda por nombre o correo |
+| `GET` | `/medic-status/last` | Última medición del usuario |
+| `GET` | `/medic-status/me` | Historial del usuario |
+| `GET` | `/medic-status/media/me` | Promedios del usuario |
+| `POST` | `/medic-status/aggregate` | Crear promedios y limpiar historial |
+| `GET` | `/user-devices/me` | Dispositivos del usuario |
+| `GET` | `/devices` | Catálogo de dispositivos |
+| `POST` | `/devices` | Crear dispositivo |
+| `POST` | `/devices/assign` | Asignar o reasignar dispositivo |
+| `DELETE` | `/devices/{idDevice}` | Eliminar un dispositivo libre |
 
 ---
 
 ## Instalación y ejecución
 
-**Requisitos:** Node.js 20+.
+**Requisitos:** Node.js 20+ y el backend FastAPI en ejecución.
 
 ```bash
-# 1. Instalar dependencias
+# 1. Entrar al proyecto e instalar dependencias
+cd ProyectoFeriaSalesianoFront
 npm install
 
-# 2. Configurar la URL de la API (opcional; por defecto http://127.0.0.1:8000)
+# 2. Crear la configuración local
 cp .env.example .env
 
 # 3. Levantar el servidor de desarrollo
 npm run dev
 ```
 
-- App: http://localhost:5173
+- **Aplicación:** http://localhost:5173
 
 ### Scripts
 
@@ -103,7 +150,7 @@ npm run dev
 | `npm run dev` | Servidor de desarrollo |
 | `npm run build` | Compilación de producción (`tsc` + `vite build`) |
 | `npm run preview` | Previsualiza el build |
-| `npm run lint` | Linter |
+| `npm run lint` | Ejecuta oxlint |
 
 ---
 
@@ -112,14 +159,13 @@ npm run dev
 | Variable | Descripción | Default |
 |----------|-------------|---------|
 | `VITE_API_BASE_URL` | URL base de la API FastAPI | `http://127.0.0.1:8000` |
+| `VITE_POLLING_INTERVAL_MS` | Intervalo de actualización del último registro, en milisegundos | `5000` |
 
 ---
 
 ## Requisito del backend (CORS)
 
-Para que el navegador pueda consumir la API, el backend debe permitir el origen del frontend.
-Ya se añadió el middleware CORS en `ProyectoFeriaSalesianoPy/Presentation/main.py` habilitando
-`http://localhost:5173` y `http://127.0.0.1:5173`.
+Para que el navegador pueda consumir la API, el backend debe permitir el origen del frontend. El middleware CORS de `ProyectoFeriaSalesianoPy/Presentation/main.py` habilita `http://localhost:5173` y `http://127.0.0.1:5173`.
 
 Asegúrate de tener el backend corriendo:
 
@@ -127,3 +173,14 @@ Asegúrate de tener el backend corriendo:
 cd ../ProyectoFeriaSalesianoPy
 uvicorn Presentation.main:app --reload --port 8000
 ```
+
+---
+
+## Verificación
+
+```bash
+npm run lint
+npm run build
+```
+
+El build ejecuta primero la comprobación de TypeScript y después genera los archivos de producción con Vite.
