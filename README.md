@@ -165,7 +165,7 @@ npm run dev
 
 ## Requisito del backend (CORS)
 
-Para que el navegador pueda consumir la API, el backend debe permitir el origen del frontend. El middleware CORS de `ProyectoFeriaSalesianoPy/Presentation/main.py` habilita `http://localhost:5173` y `http://127.0.0.1:5173`.
+Para que el navegador pueda consumir la API, el backend debe permitir el origen del frontend. Los orígenes se configuran en el `.env` del backend con la variable `CORS_ORIGINS` (separados por comas); por defecto incluye `http://localhost:5173` y `http://127.0.0.1:5173`.
 
 Asegúrate de tener el backend corriendo:
 
