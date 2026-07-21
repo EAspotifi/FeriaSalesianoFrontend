@@ -61,7 +61,7 @@ export function HistoryPage() {
             <p className="panel__subtitle">Promedios diarios almacenados.</p>
           </div>
           <Button type="button" isLoading={isAggregating} onClick={() => void aggregate()}>
-            Crear promedio y limpiar historial
+            Crear promedio
           </Button>
         </header>
 

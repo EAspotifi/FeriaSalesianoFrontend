@@ -116,7 +116,7 @@ Endpoints consumidos de la API:
 | `GET` | `/medic-status/last` | Última medición del usuario |
 | `GET` | `/medic-status/me` | Historial del usuario |
 | `GET` | `/medic-status/media/me` | Promedios del usuario |
-| `POST` | `/medic-status/aggregate` | Crear promedios y limpiar historial |
+| `POST` | `/medic-status/aggregate` | Crear promedios (conserva el historial) |
 | `GET` | `/user-devices/me` | Dispositivos del usuario |
 | `GET` | `/devices` | Catálogo de dispositivos |
 | `POST` | `/devices` | Crear dispositivo |

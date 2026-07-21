@@ -54,7 +54,7 @@ export function useMedicStatusHistory(): UseHistoryResult {
     try {
       const result: AggregateResult = await useCases.aggregate.execute();
       setAggregateMessage(
-        `Promedio creado. Usuarios: ${result.usuariosProcesados}. Registros eliminados: ${result.registrosEliminados}.`,
+        `Promedio creado. Usuarios procesados: ${result.usuariosProcesados}.`,
       );
       await reload();
     } catch (err) {

@@ -33,6 +33,5 @@ export function mapMedicStatusMediaDto(dto: MedicStatusMediaDto): MedicStatusMed
 export function mapAggregateDto(dto: AggregateResponseDto): AggregateResult {
   return {
     usuariosProcesados: dto.usuariosProcesados,
-    registrosEliminados: dto.registrosEliminados,
   };
 }

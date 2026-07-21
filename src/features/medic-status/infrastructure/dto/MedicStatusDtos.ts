@@ -19,5 +19,4 @@ export interface MedicStatusMediaDto {
 
 export interface AggregateResponseDto {
   usuariosProcesados: number;
-  registrosEliminados: number;
 }
