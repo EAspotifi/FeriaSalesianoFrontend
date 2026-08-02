@@ -13,10 +13,17 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [username, setUsername] = useState("");
   const [correo, setCorreo] = useState("");
   const [password, setPassword] = useState("");
+  const [birth, setBirth] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const ok = await submit({ nombre, username, correo, password });
+    const ok = await submit({
+      nombre,
+      username,
+      correo,
+      password,
+      birth: birth || null,
+    });
     if (ok) onSuccess?.();
   }
 
@@ -52,6 +59,14 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         errors={fieldErrors.Correo ?? fieldErrors.correo}
         placeholder="tucorreo@ejemplo.com"
         required
+      />
+      <TextField
+        label="Fecha de nacimiento"
+        name="birth"
+        type="date"
+        value={birth}
+        onChange={(e) => setBirth(e.target.value)}
+        errors={fieldErrors.Birth ?? fieldErrors.birth}
       />
       <TextField
         label="Contraseña"

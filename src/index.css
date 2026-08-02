@@ -388,6 +388,12 @@ body {
   color: var(--color-primary-dark);
 }
 
+.metric-card__state {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
 .profile-menu {
   position: relative;
 }
@@ -653,6 +659,31 @@ body {
   font-size: 13px;
   color: var(--color-text-muted);
   word-break: break-all;
+}
+
+.filters-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.pagination .button {
+  margin-top: 0;
+}
+
+@media (max-width: 640px) {
+  .filters-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Responsive ---------- */

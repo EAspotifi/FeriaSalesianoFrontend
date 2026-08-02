@@ -18,6 +18,7 @@ export interface SignInRequestDto {
   nombre: string;
   correo: string;
   password: string;
+  birth?: string | null;
 }
 
 export interface SignInResponseDto {
@@ -27,6 +28,7 @@ export interface SignInResponseDto {
   correo: string;
   token: string;
   refreshToken: string;
+  birth?: string | null;
 }
 
 export interface RefreshTokenRequestDto {
@@ -46,4 +48,5 @@ export interface ProfileResponseDto {
   username: string;
   nombre: string;
   correo: string;
+  birth?: string | null;
 }

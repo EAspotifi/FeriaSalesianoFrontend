@@ -15,6 +15,12 @@ export function mapMedicStatusDto(dto: MedicStatusDto): MedicStatus {
     spo2: dto.spo2,
     temperature: dto.temperature,
     created: dto.created,
+    idEstadoBpm: dto.idEstadoBpm,
+    estadoBpm: dto.estadoBpm,
+    idEstadoSpo2: dto.idEstadoSpo2,
+    estadoSpo2: dto.estadoSpo2,
+    idEstadoTemperature: dto.idEstadoTemperature,
+    estadoTemperature: dto.estadoTemperature,
   };
 }
 
@@ -27,6 +33,12 @@ export function mapMedicStatusMediaDto(dto: MedicStatusMediaDto): MedicStatusMed
     spo2: dto.spo2,
     temperature: dto.temperature,
     created: dto.created,
+    idEstadoBpm: dto.idEstadoBpm,
+    estadoBpm: dto.estadoBpm,
+    idEstadoSpo2: dto.idEstadoSpo2,
+    estadoSpo2: dto.estadoSpo2,
+    idEstadoTemperature: dto.idEstadoTemperature,
+    estadoTemperature: dto.estadoTemperature,
   };
 }
 

@@ -7,6 +7,7 @@ interface ProfileDto {
   username: string;
   nombre: string;
   correo: string;
+  birth?: string | null;
 }
 
 export class HttpProfileRepository implements ProfileRepository {
@@ -19,6 +20,7 @@ export class HttpProfileRepository implements ProfileRepository {
       username: dto.username,
       nombre: dto.nombre,
       correo: dto.correo,
+      birth: dto.birth ?? null,
     };
   }
 }

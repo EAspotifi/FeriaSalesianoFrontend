@@ -40,6 +40,7 @@ export class HttpAuthRepository implements AuthRepository {
       nombre: registration.nombre,
       correo: registration.correo,
       password: registration.password,
+      birth: registration.birth ?? null,
     };
     const dto = await this.http.postPublic<SignInResponseDto>("/auth/signin", body);
     return mapSignInResponseToSession(dto);

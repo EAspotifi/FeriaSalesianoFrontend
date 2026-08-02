@@ -23,6 +23,10 @@ export function ProfilePage() {
             <span className="info-card__label">Correo</span>
             <span className="info-card__value">{profile.correo}</span>
           </article>
+          <article className="info-card">
+            <span className="info-card__label">Fecha de nacimiento</span>
+            <span className="info-card__value">{profile.birth ?? "No registrada"}</span>
+          </article>
         </section>
       )}
     </AppShell>

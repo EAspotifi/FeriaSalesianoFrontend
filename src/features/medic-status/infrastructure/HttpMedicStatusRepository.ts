@@ -1,3 +1,5 @@
+import type { PageQuery, PagedResult } from "../../../shared/types/PagedResult";
+import { buildQuery } from "../../../shared/types/PagedResult";
 import type { HttpClient } from "../../../shared/utils/httpClient";
 import type { AggregateResult } from "../domain/entities/AggregateResult";
 import type { MedicStatus } from "../domain/entities/MedicStatus";
@@ -7,6 +9,7 @@ import type {
   AggregateResponseDto,
   MedicStatusDto,
   MedicStatusMediaDto,
+  PagedDto,
 } from "./dto/MedicStatusDtos";
 import {
   mapAggregateDto,
@@ -22,14 +25,30 @@ export class HttpMedicStatusRepository implements MedicStatusRepository {
     return dto ? mapMedicStatusDto(dto) : null;
   }
 
-  async getMyHistory(): Promise<MedicStatus[]> {
-    const dtos = await this.http.get<MedicStatusDto[]>("/medic-status/me");
-    return dtos.map(mapMedicStatusDto);
+  async getMyHistory(query?: PageQuery): Promise<PagedResult<MedicStatus>> {
+    const dto = await this.http.get<PagedDto<MedicStatusDto>>(
+      `/medic-status/me${buildQuery(query ?? { page: 1, pageSize: 10 })}`,
+    );
+    return {
+      items: dto.items.map(mapMedicStatusDto),
+      page: dto.page,
+      pageSize: dto.pageSize,
+      total: dto.total,
+      totalPages: dto.totalPages,
+    };
   }
 
-  async getMyMedia(): Promise<MedicStatusMedia[]> {
-    const dtos = await this.http.get<MedicStatusMediaDto[]>("/medic-status/media/me");
-    return dtos.map(mapMedicStatusMediaDto);
+  async getMyMedia(query?: PageQuery): Promise<PagedResult<MedicStatusMedia>> {
+    const dto = await this.http.get<PagedDto<MedicStatusMediaDto>>(
+      `/medic-status/media/me${buildQuery(query ?? { page: 1, pageSize: 10 })}`,
+    );
+    return {
+      items: dto.items.map(mapMedicStatusMediaDto),
+      page: dto.page,
+      pageSize: dto.pageSize,
+      total: dto.total,
+      totalPages: dto.totalPages,
+    };
   }
 
   async aggregate(): Promise<AggregateResult> {

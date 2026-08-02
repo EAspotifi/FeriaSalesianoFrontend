@@ -36,6 +36,7 @@ export function DashboardPage() {
           <span className="metric-card__value">
             {isLoading && !data ? "—" : data ? formatMetric(data.bpm) : "Sin datos"}
           </span>
+          {data && <span className="metric-card__state">{data.estadoBpm}</span>}
         </article>
         <article className="metric-card">
           <span className="metric-card__label">SpO₂</span>
@@ -46,6 +47,7 @@ export function DashboardPage() {
                 ? `${formatMetric(data.spo2)} %`
                 : "Sin datos"}
           </span>
+          {data && <span className="metric-card__state">{data.estadoSpo2}</span>}
         </article>
         <article className="metric-card">
           <span className="metric-card__label">Temperatura</span>
@@ -56,6 +58,7 @@ export function DashboardPage() {
                 ? `${formatMetric(data.temperature)} °C`
                 : "Sin datos"}
           </span>
+          {data && <span className="metric-card__state">{data.estadoTemperature}</span>}
         </article>
       </section>
 
