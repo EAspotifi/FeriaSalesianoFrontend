@@ -19,6 +19,7 @@ export interface SignInRequestDto {
   correo: string;
   password: string;
   birth?: string | null;
+  familiares?: string[] | null;
 }
 
 export interface SignInResponseDto {

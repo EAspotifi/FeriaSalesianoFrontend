@@ -4,4 +4,5 @@ export interface Registration {
   readonly correo: string;
   readonly password: string;
   readonly birth?: string | null;
+  readonly familiares?: string[];
 }
