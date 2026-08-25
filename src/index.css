@@ -565,6 +565,22 @@ body {
   color: var(--color-text-muted);
 }
 
+.medic-report__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.medic-report__option input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
 .data-table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;

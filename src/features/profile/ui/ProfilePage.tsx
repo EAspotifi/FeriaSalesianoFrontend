@@ -1,5 +1,6 @@
 import { AppShell } from "../../../app/layout/AppShell";
 import { FamiliaresSection } from "../../familiares/ui/components/FamiliaresSection";
+import { MedicReportSection } from "./components/MedicReportSection";
 import { useProfile } from "./hooks/useProfile";
 
 export function ProfilePage() {
@@ -31,6 +32,7 @@ export function ProfilePage() {
             </article>
           </section>
 
+          <MedicReportSection />
           <FamiliaresSection />
         </>
       )}
