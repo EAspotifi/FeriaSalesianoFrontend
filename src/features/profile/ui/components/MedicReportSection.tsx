@@ -37,7 +37,13 @@ export function MedicReportSection() {
       </label>
 
       {error && <p className="login-form__error">{error}</p>}
-      {result && (
+      {result && result.correosEnviados === 0 && (
+        <p className="login-form__error">
+          No se envió ningún correo. Con el dominio de prueba de Resend solo llega al correo
+          de la cuenta Resend. Verifica el dominio o usa ese mismo correo en tu perfil.
+        </p>
+      )}
+      {result && result.correosEnviados > 0 && (
         <p className="panel__success">
           Informe enviado: {result.correosEnviados} correo(s), {result.mesesIncluidos} mes(es)
           {result.correosOmitidos > 0 ? `, ${result.correosOmitidos} omitido(s)` : ""}.
